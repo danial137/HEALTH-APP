@@ -30,19 +30,32 @@ interface CustomProps {
 
 
 const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
-    switch (props.fieldType) {
+    const { fieldType, iconSrc, iconAlt,placeholder } = props;
+    switch (fieldType) {
         case FormFieldType.INPUT:
         
             return (
                 <div className='flex rounded-md border boder-dark-500 bg-dark-400'>
 
-                    {props.iconSrc && (
+                    {iconSrc && (
 
                         <Image
-                        src={props.iconSrc}
+                            src={iconSrc}
+                            height={24}
+                            width={24}
+                            alt={iconAlt || 'icon'}
+                            className='ml-2'
                         />
 
                     )}
+
+                    <FormControl>
+                        <Input
+                            placeholder={placeholder}
+                            {...field}
+                            className='shad-input border-0'
+                        />
+                    </FormControl>
 
                 </div>
             )

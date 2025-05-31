@@ -3,13 +3,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
-import {Form} from "@/components/ui/form"
+import { Form } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import CustomFormField from "../CustomFormField"
 import SubmitButton from "../SubmitButton"
 import { useState } from "react"
 import { UserFormValidation } from "@/libs/validation"
-
+import { useRouter } from "next/navigation"
 export enum FormFieldType {
   INPUT = 'input',
   TEXTAREA = 'textarea',
@@ -23,7 +23,9 @@ export enum FormFieldType {
 
 const PatientForm = () => {
 
-  const [isLoading,setisLoading]=useState(false)
+  const router = useRouter()
+
+  const [isLoading, setisLoading] = useState(false)
 
   const form = useForm<z.infer<typeof UserFormValidation>>({
     resolver: zodResolver(UserFormValidation),
@@ -31,14 +33,24 @@ const PatientForm = () => {
       name: "",
       email: "",
       phone: "",
-      
+
     },
   })
 
 
-  function onSubmit(values: z.infer<typeof UserFormValidation>) {
+  async function onSubmit({ name, email, phone }: z.infer<typeof UserFormValidation>) {
 
-    console.log(values)
+    setisLoading(true)
+
+    try {
+      // const userData = { name, email, phone };
+
+      // const user = await createUser(userData)
+      // if(user) router.push('/patients/${user.$id}/register')
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
   return (
@@ -50,7 +62,7 @@ const PatientForm = () => {
         </section>
 
         <CustomFormField
-        fieldType ={FormFieldType.INPUT}
+          fieldType={FormFieldType.INPUT}
           control={form.control}
           name="name"
           label="Full name"
@@ -73,7 +85,7 @@ const PatientForm = () => {
           name="phone"
           label="phone number"
           placeholder="(555) 123-4567"
-       
+
         />
         <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
       </form>
